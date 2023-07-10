@@ -1,0 +1,3 @@
+onload = () => {
+    game.init()
+}
