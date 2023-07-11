@@ -1,6 +1,7 @@
 class Player {
-    constructor(ctx, canvasHeight) {
+    constructor(ctx, canvasHeight, canvasWidth) {
         this.ctx = ctx
+        this.canvasWidth = canvasWidth
         this.canvasHeight = canvasHeight
 
         this.height = 100
@@ -21,9 +22,10 @@ class Player {
     setEventListeners() {
         document.addEventListener("keydown", (event) => {
             const key = event.key
-            if (key === "ArrowLeft") this.posX -= 10
-            if (key === "ArrowRight") this.posX += 10
-            console.log(this.posX)
+            console.log(key)
+            if (key === "ArrowLeft" && this.posX > 0) this.posX -= 10
+            if (key === "ArrowRight" && this.posX + this.width < this.canvasWidth) this.posX += 10
+            if (key === "e") this.bullets.push(new Bullet(this.ctx, this.posX, this.posY, this.width, this.height))
         })
     }
 
