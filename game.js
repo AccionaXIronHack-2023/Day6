@@ -10,11 +10,13 @@ const game = {
     ctx: null,
     interval: null,
     FPS: 60,
+    frames: 0,
 
     player: null,
     boss: null,
 
     victoryScreen: null,
+    defeatScreen: null,
 
 
     initCanvas() {
@@ -25,6 +27,8 @@ const game = {
     loadImages() {
         this.victoryScreen = new Image()
         this.victoryScreen.src = "./assets/images/victory.png"
+        this.defeatScreen = new Image()
+        this.defeatScreen.src = "./assets/images/defeat.jpg"
     },
 
     setDimensions() {
@@ -40,11 +44,14 @@ const game = {
     },
 
     drawAll() {
-        this.player.draw()
+        this.player.update()
         this.boss.draw()
         this.player.bullets.forEach(bullet => {
             bullet.update()
         }) // [BALA1,BALA2,BALA3,BALA4...]
+        this.boss.potatoes.forEach(potato => {
+            potato.update()
+        })
     },
 
     clearAll() {
@@ -53,6 +60,7 @@ const game = {
 
     clearItems() {
         this.player.bullets = this.player.bullets.filter(bullet => bullet.posX < this.width)
+        this.boss.potatoes = this.boss.potatoes.filter(potato => potato.posX + potato.width > 0)
     },
 
     checkCollisions() {
@@ -60,16 +68,24 @@ const game = {
             if (bullet.posX + bullet.width > this.boss.posX) {
                 this.boss.lives--
                 this.player.bullets.splice(index, 1)
-                console.log("VIDAS  =>", this.boss.lives)
-                if (this.boss.lives === 0) this.winGame()
+                if (this.boss.lives === 0) this.gameFinished(this.victoryScreen)
+            }
+        })
+        this.boss.potatoes.forEach((potato, index) => {
+            if (this.player.posX + this.player.width > potato.posX
+                && this.player.posX < potato.posX + potato.width
+                && this.player.posY + this.player.height > potato.posY) {
+                this.player.lives--
+                this.boss.potatoes.splice(index, 1)
+                if (this.player.lives === 0) this.gameFinished(this.defeatScreen)
             }
         })
     },
 
-    winGame() {
+    gameFinished(image) {
         this.clearAll()
         clearInterval(this.interval)
-        this.ctx.drawImage(this.victoryScreen, 0, 0, this.width, this.height)
+        this.ctx.drawImage(image, 0, 0, this.width, this.height)
         setTimeout(() => {
             location.reload()
         }, 2000)
@@ -78,6 +94,13 @@ const game = {
     start() {
         this.player.setEventListeners()
         this.interval = setInterval(() => {
+            this.frames++
+            if (this.frames % 10 === 0) {
+                this.player.canShoot = true
+            }
+            if (this.frames % 60 === 0) {
+                this.boss.potatoes.push(new Potato(this.ctx, this.boss.posX, this.height))
+            }
             this.clearAll()
             this.drawAll()
             this.clearItems()

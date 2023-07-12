@@ -20,6 +20,6 @@ class Bullet {
     }
 
     move() {
-        this.posX += 10
+        this.posX += 20
     }
 }

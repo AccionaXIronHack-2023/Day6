@@ -8,10 +8,24 @@ class Player {
         this.width = 50
         this.posX = 50
         this.posY = this.canvasHeight - this.height - 50
+        this.velY = 0
+        this.gravity = 0.9
 
-        this.lives = 1
+        this.canJump = true
+        this.canMoveLeft = false
+        this.canMoveRight = false
+        this.canShoot = true
+
+        this.lives = 3
 
         this.bullets = []
+    }
+
+    update() {
+        this.draw()
+        this.move()
+        this.activateGravity()
+        this.checkFloor()
     }
 
     draw() {
@@ -19,14 +33,41 @@ class Player {
         this.ctx.fillRect(this.posX, this.posY, this.width, this.height)
     }
 
+    activateGravity() {
+        this.velY += this.gravity
+    }
+
+    checkFloor() {
+        if (this.posY + this.height + this.velY >= this.canvasHeight - 50) {
+            this.velY = 0
+            this.canJump = true
+        }
+    }
+
+    move() {
+        this.posY += this.velY
+        if (this.canMoveLeft && this.posX > 0) this.posX -= 15
+        if (this.canMoveRight && this.posX + this.width < this.canvasWidth) this.posX += 15
+    }
+
     setEventListeners() {
         document.addEventListener("keydown", (event) => {
             const key = event.key
-            console.log(key)
-            if (key === "ArrowLeft" && this.posX > 0) this.posX -= 10
-            if (key === "ArrowRight" && this.posX + this.width < this.canvasWidth) this.posX += 10
-            if (key === "e") this.bullets.push(new Bullet(this.ctx, this.posX, this.posY, this.width, this.height))
+            if (key === "ArrowLeft") this.canMoveLeft = true
+            if (key === "ArrowRight") this.canMoveRight = true
+            if (key === "ArrowUp" && this.canJump) {
+                this.velY -= 20
+                this.canJump = false
+            }
+            if (key === "e" && this.canShoot) {
+                this.bullets.push(new Bullet(this.ctx, this.posX, this.posY, this.width, this.height))
+                this.canShoot = false
+            }
+        })
+        document.addEventListener("keyup", (event) => {
+            const key = event.key
+            if (key === "ArrowLeft") this.canMoveLeft = false
+            if (key === "ArrowRight") this.canMoveRight = false
         })
     }
-
 }

@@ -11,6 +11,8 @@ class Boss {
         this.posY = this.canvasHeight - this.height - 50
 
         this.lives = 50
+
+        this.potatoes = []
     }
 
     draw() {
