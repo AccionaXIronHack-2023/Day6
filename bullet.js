@@ -2,11 +2,14 @@ class Bullet {
     constructor(ctx, playerPosX, playerPosY, playerWidth, playerHeight) {
         this.ctx = ctx
 
-        this.width = 50
-        this.height = 10
+        this.width = 74
+        this.height = 21
 
-        this.posX = playerPosX + playerWidth
-        this.posY = playerPosY + playerHeight / 2
+        this.posX = playerPosX + playerWidth - 10
+        this.posY = playerPosY + (playerHeight / 2) - 20
+
+        this.image = new Image()
+        this.image.src = "./assets/images/bullet.png"
     }
 
     update() {
@@ -15,8 +18,7 @@ class Bullet {
     }
 
     draw() {
-        this.ctx.fillStyle = "blue"
-        this.ctx.fillRect(this.posX, this.posY, this.width, this.height)
+        this.ctx.drawImage(this.image, this.posX, this.posY, this.width, this.height)
     }
 
     move() {

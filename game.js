@@ -15,6 +15,7 @@ const game = {
     player: null,
     boss: null,
 
+    background: null,
     victoryScreen: null,
     defeatScreen: null,
 
@@ -29,6 +30,8 @@ const game = {
         this.victoryScreen.src = "./assets/images/victory.png"
         this.defeatScreen = new Image()
         this.defeatScreen.src = "./assets/images/defeat.jpg"
+        this.background = new Image()
+        this.background.src = "./assets/images/background.jpg"
     },
 
     setDimensions() {
@@ -44,6 +47,7 @@ const game = {
     },
 
     drawAll() {
+        this.ctx.drawImage(this.background, 0, 0, this.width, this.height)
         this.player.update()
         this.boss.draw()
         this.player.bullets.forEach(bullet => {
@@ -65,7 +69,7 @@ const game = {
 
     checkCollisions() {
         this.player.bullets.forEach((bullet, index) => {
-            if (bullet.posX + bullet.width > this.boss.posX) {
+            if (bullet.posX + bullet.width > this.boss.posX + 150) {
                 this.boss.lives--
                 this.player.bullets.splice(index, 1)
                 if (this.boss.lives === 0) this.gameFinished(this.victoryScreen)
@@ -100,6 +104,15 @@ const game = {
             }
             if (this.frames % 60 === 0) {
                 this.boss.potatoes.push(new Potato(this.ctx, this.boss.posX, this.height))
+            }
+            if (this.frames % 12 === 0) {
+                this.boss.potatoes.forEach(potato => {
+                    if (potato.sX === 560) {
+                        potato.sX = 0
+                        return
+                    }
+                    potato.sX += 140
+                })
             }
             this.clearAll()
             this.drawAll()
