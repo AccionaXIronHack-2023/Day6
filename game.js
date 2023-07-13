@@ -11,6 +11,7 @@ const game = {
     interval: null,
     FPS: 60,
     frames: 0,
+    isDifficult: null,
 
     player: null,
     boss: null,
@@ -42,8 +43,15 @@ const game = {
     },
 
     generateAll() {
-        this.player = new Player(this.ctx, this.height, this.width)
-        this.boss = new Boss(this.ctx, this.width, this.height)
+        let playerLives = 3
+        let bossLives = 50
+        if (this.isDifficult) {
+            console.log("EL JUEGO ES DIFÍCIL")
+            playerLives = 1
+            bossLives = 100
+        }
+        this.player = new Player(this.ctx, this.height, this.width, playerLives)
+        this.boss = new Boss(this.ctx, this.width, this.height, bossLives)
     },
 
     drawAll() {
@@ -122,7 +130,8 @@ const game = {
 
     },
 
-    init() {
+    init(isDifficult) {
+        this.isDifficult = isDifficult
         this.initCanvas()
         this.loadImages()
         this.setDimensions()

@@ -1,5 +1,5 @@
 class Boss {
-    constructor(ctx, canvasWidth, canvasHeight) {
+    constructor(ctx, canvasWidth, canvasHeight, lives) {
         this.ctx = ctx
         this.height = 420
         this.width = 578
@@ -10,7 +10,7 @@ class Boss {
         this.posX = this.canvasWidth - this.width - 50
         this.posY = this.canvasHeight - this.height - 50
 
-        this.lives = 50
+        this.lives = lives
 
         this.potatoes = []
 

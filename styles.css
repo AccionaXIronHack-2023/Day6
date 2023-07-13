@@ -5,3 +5,37 @@ body {
     padding: 0;
     overflow: hidden;
 }
+
+.difficulty-menu {
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: url("./assets/images/menu.png");
+    background-size: cover;
+    background-position: center;
+}
+
+.difficult-button {
+    margin-left: 20px;
+}
+
+.main-button {
+    font-family: 'Ultra', sans-serif;
+    font-size: 32px;
+    border-radius: 2px;
+    color: black;
+    background-color: #f6e7d6;
+    text-decoration: none;
+    border: 2px solid black;
+    padding: 20px;
+    box-shadow: 0 0 3px black;
+}
+
+.main-button:hover {
+    background-color: #a67648;
+}
+
+.non-display {
+    display: none;
+}

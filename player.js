@@ -1,5 +1,5 @@
 class Player {
-    constructor(ctx, canvasHeight, canvasWidth) {
+    constructor(ctx, canvasHeight, canvasWidth, lives) {
         this.ctx = ctx
         this.canvasWidth = canvasWidth
         this.canvasHeight = canvasHeight
@@ -16,7 +16,7 @@ class Player {
         this.canMoveRight = false
         this.canShoot = true
 
-        this.lives = 3
+        this.lives = lives
 
         this.bullets = []
 
